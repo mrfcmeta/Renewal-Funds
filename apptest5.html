@@ -1,0 +1,1132 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+  <title>Grant Dashboard | US-All Community Trust Relief Program</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
+    }
+
+    body {
+      background: linear-gradient(145deg, #f0f7ff 0%, #ffffff 100%);
+      min-height: 100vh;
+      color: #0a1a32;
+    }
+
+    :root {
+      --primary-deep: #0b3d91;
+      --accent-green: #28a745;
+      --white-pure: #ffffff;
+      --shadow-card: 0 25px 50px -12px rgba(0, 60, 120, 0.25);
+      --warning-yellow: #ffc107;
+      --upload-blue: #4a90e2;
+    }
+
+    /* Login Screen */
+    .login-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 1rem;
+      background: radial-gradient(circle at 10% 30%, rgba(11,61,145,0.05) 0%, transparent 50%);
+    }
+
+    .login-card {
+      background: rgba(255,255,255,0.95);
+      backdrop-filter: blur(12px);
+      border-radius: 2.5rem;
+      padding: 2.5rem 2rem;
+      max-width: 500px;
+      width: 100%;
+      box-shadow: var(--shadow-card);
+      border: 1px solid rgba(255,255,255,0.8);
+      animation: floatIn 0.5s ease-out;
+    }
+
+    @keyframes floatIn {
+      0% { opacity: 0; transform: translateY(20px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+
+    .login-logo {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 1.5rem;
+    }
+
+    .login-logo img {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      border: 3px solid var(--accent-green);
+    }
+
+    .login-card h2 {
+      color: var(--primary-deep);
+      font-size: 2rem;
+      font-weight: 600;
+      text-align: center;
+    }
+
+    .login-sub {
+      text-align: center;
+      color: #336699;
+      margin: 0.5rem 0 2rem;
+      font-size: 1rem;
+      border-bottom: 2px dashed var(--accent-green);
+      padding-bottom: 1rem;
+    }
+
+    .id-input-group {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+
+    .id-input-group label {
+      font-weight: 600;
+      color: var(--primary-deep);
+    }
+
+    .id-input-group input {
+      padding: 1rem 1.5rem;
+      border: 2px solid #dbe4f0;
+      border-radius: 60px;
+      font-size: 1rem;
+      width: 100%;
+    }
+
+    .login-btn {
+      background: var(--primary-deep);
+      color: white;
+      border: none;
+      padding: 1.2rem;
+      border-radius: 60px;
+      font-weight: 700;
+      font-size: 1.1rem;
+      cursor: pointer;
+      width: 100%;
+    }
+
+    .login-error {
+      color: #b91c1c;
+      text-align: center;
+      margin-top: 1rem;
+    }
+
+    /* User Info Collection */
+    .info-container {
+      display: none;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 1rem;
+    }
+    .info-container.active { display: flex; }
+    .info-card {
+      background: white;
+      border-radius: 2.5rem;
+      padding: 2.5rem;
+      max-width: 600px;
+      width: 100%;
+      box-shadow: var(--shadow-card);
+    }
+    .info-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+    .info-field.full-width { grid-column: span 2; }
+    .info-field label {
+      font-weight: 600;
+      color: var(--primary-deep);
+    }
+    .info-field input, .info-field select {
+      padding: 0.9rem 1.2rem;
+      border: 2px solid #dbe4f0;
+      border-radius: 60px;
+      font-size: 1rem;
+      width: 100%;
+    }
+    .save-info-btn {
+      background: var(--accent-green);
+      color: white;
+      border: none;
+      padding: 1.2rem;
+      border-radius: 60px;
+      font-weight: 700;
+      cursor: pointer;
+      width: 100%;
+    }
+
+    /* Dashboard */
+    .dashboard-container {
+      display: none;
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 1rem;
+    }
+    .dashboard-container.active { display: block; }
+
+    .dash-header {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(255,255,255,0.9);
+      border-radius: 2rem;
+      padding: 1.2rem 2rem;
+      margin-bottom: 1.5rem;
+      border: 1px solid rgba(255,255,255,0.9);
+    }
+    .user-info h1 { color: var(--primary-deep); font-size: 1.6rem; }
+    .user-details {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+      font-size: 0.9rem;
+      color: #2f5b8a;
+    }
+    .app-id-badge {
+      background: var(--primary-deep);
+      color: white;
+      padding: 0.5rem 1.2rem;
+      border-radius: 40px;
+      font-size: 0.85rem;
+    }
+    .logout-btn {
+      background: transparent;
+      border: 2px solid var(--primary-deep);
+      color: var(--primary-deep);
+      padding: 0.5rem 1.5rem;
+      border-radius: 40px;
+      cursor: pointer;
+    }
+
+    .balance-hero {
+      background: linear-gradient(135deg, #0b3d91 0%, #1d5ab9 100%);
+      border-radius: 2rem;
+      padding: 1.8rem 2rem;
+      color: white;
+      margin-bottom: 1.5rem;
+    }
+    .balance-amount { font-size: 3rem; font-weight: 700; }
+
+    .section-title {
+      font-size: 1.6rem;
+      margin: 1.5rem 0 1rem;
+      border-left: 6px solid var(--accent-green);
+      padding-left: 1rem;
+      color: var(--primary-deep);
+    }
+
+    .payment-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 0.8rem;
+      margin: 1rem 0;
+    }
+    .method-card {
+      background: white;
+      border-radius: 1.5rem;
+      padding: 1rem;
+      text-align: center;
+      border: 2px solid #e6ecf5;
+      cursor: pointer;
+    }
+    .method-card.selected {
+      border-color: var(--accent-green);
+      background: #f0fff4;
+    }
+
+    .cashout-panel {
+      background: white;
+      border-radius: 2rem;
+      padding: 1.5rem;
+      margin: 1rem 0;
+    }
+    .selected-method {
+      background: #f0f7ff;
+      border-radius: 40px;
+      padding: 0.8rem 1.5rem;
+      display: inline-block;
+      margin-bottom: 1rem;
+      font-weight: 600;
+    }
+    .cashout-input-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      align-items: center;
+    }
+    .cashout-input-group input {
+      flex: 2;
+      padding: 1rem 1.5rem;
+      border: 2px solid #d8e2f2;
+      border-radius: 60px;
+      font-size: 1rem;
+    }
+    .cashout-btn {
+      background: var(--accent-green);
+      color: white;
+      border: none;
+      padding: 1rem 2rem;
+      border-radius: 60px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .process-section {
+      background: white;
+      border-radius: 2rem;
+      padding: 1.5rem;
+      margin: 1.5rem 0;
+      border: 2px solid var(--primary-deep);
+    }
+    .process-steps {
+      display: flex;
+      flex-direction: column;
+      gap: 0.8rem;
+      max-height: 400px;
+      overflow-y: auto;
+    }
+    .process-step {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 1rem;
+      padding: 1rem;
+      background: #f8fafd;
+      border-radius: 1.5rem;
+      border: 2px solid #e0eaf5;
+    }
+    .process-step.completed {
+      border-color: var(--accent-green);
+      background: #f0fff4;
+    }
+    .step-number {
+      width: 35px;
+      height: 35px;
+      background: var(--primary-deep);
+      color: white;
+      border-radius: 35px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+    }
+    .step-info { flex: 2; }
+    .upload-btn {
+      background: var(--upload-blue);
+      color: white;
+      border: none;
+      padding: 0.5rem 1.2rem;
+      border-radius: 40px;
+      cursor: pointer;
+    }
+    .status-badge {
+      padding: 0.3rem 1rem;
+      border-radius: 40px;
+      font-size: 0.85rem;
+    }
+    .status-badge.pending { background: #fff3cd; color: #856404; }
+    .status-badge.completed { background: #d4edda; color: #155724; }
+    .status-badge.locked { background: #e9ecef; color: #6c757d; }
+
+    .scroll-section {
+      background: white;
+      border-radius: 2rem;
+      padding: 1.5rem;
+      margin: 1.5rem 0;
+    }
+    .scroll-container {
+      max-height: 300px;
+      overflow-y: auto;
+      border-radius: 1rem;
+      background: #f2f8ff;
+      padding: 0.5rem;
+    }
+    .tx-row {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      background: white;
+      margin: 0.5rem 0;
+      padding: 0.8rem;
+      border-radius: 2rem;
+      border-left: 4px solid var(--accent-green);
+    }
+
+    .stats-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin: 1rem 0;
+    }
+    .stat-card {
+      background: white;
+      border-radius: 1.5rem;
+      padding: 1.2rem;
+      flex: 1;
+      border: 1px solid #e0ecf9;
+    }
+
+    /* Chat Widget */
+    .chat-widget {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      z-index: 1000;
+    }
+    .chat-button {
+      width: 60px;
+      height: 60px;
+      background: var(--primary-deep);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    }
+    .chat-window {
+      display: none;
+      position: absolute;
+      bottom: 80px;
+      right: 0;
+      width: 320px;
+      height: 450px;
+      background: white;
+      border-radius: 1.5rem;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+      flex-direction: column;
+      overflow: hidden;
+    }
+    .chat-window.active { display: flex; }
+    .chat-header {
+      background: var(--primary-deep);
+      color: white;
+      padding: 1rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .chat-messages {
+      flex: 1;
+      padding: 1rem;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 0.8rem;
+    }
+    .message {
+      max-width: 85%;
+      padding: 0.6rem 1rem;
+      border-radius: 1rem;
+      font-size: 0.9rem;
+    }
+    .message.user {
+      background: var(--primary-deep);
+      color: white;
+      align-self: flex-end;
+    }
+    .message.bot {
+      background: #f0f0f0;
+      color: #333;
+      align-self: flex-start;
+    }
+    .chat-input {
+      display: flex;
+      padding: 1rem;
+      border-top: 1px solid #eee;
+    }
+    .chat-input input {
+      flex: 1;
+      padding: 0.5rem;
+      border: 1px solid #ddd;
+      border-radius: 2rem;
+      margin-right: 0.5rem;
+    }
+
+    /* Modal */
+    .modal-overlay, .upload-modal {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.5);
+      align-items: center;
+      justify-content: center;
+      z-index: 1500;
+    }
+    .modal-content {
+      background: white;
+      border-radius: 2rem;
+      padding: 2rem;
+      max-width: 500px;
+      width: 90%;
+    }
+
+    @media (max-width: 768px) {
+      .info-grid { grid-template-columns: 1fr; }
+      .dash-header { flex-direction: column; text-align: center; }
+      .balance-amount { font-size: 2rem; }
+      .chat-window { width: 280px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- LOGIN SCREEN -->
+<div class="login-container" id="loginContainer">
+  <div class="login-card">
+    <div class="login-logo">
+      <img src="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2280%22%20height%3D%2280%22%20viewBox%3D%220%200%20100%20100%22%3E%3Ccircle%20cx%3D%2250%22%20cy%3D%2250%22%20r%3D%2245%22%20fill%3D%22%230b3d91%22%2F%3E%3Ctext%20x%3D%2250%22%20y%3D%2268%22%20font-size%3D%2248%22%20text-anchor%3D%22middle%22%20fill%3D%22%23ffffff%22%3ECT%3C%2Ftext%3E%3C%2Fsvg%3E" alt="logo">
+    </div>
+    <h2>Grant Dashboard</h2>
+    <div class="login-sub">secure portal • USACTRP</div>
+    <div class="id-input-group">
+      <label>🔐 Application ID</label>
+      <input type="text" id="appIdInput" placeholder="Enter your Application ID">
+    </div>
+    <button class="login-btn" onclick="userLogin()">Continue →</button>
+    <div class="login-error" id="loginError"></div>
+  </div>
+</div>
+
+<!-- USER INFO COLLECTION -->
+<div class="info-container" id="infoContainer">
+  <div class="info-card">
+    <h2>Complete Your Profile</h2>
+    <div style="color:#336699; margin-bottom:1.5rem;">Please enter your details</div>
+    <div class="info-grid">
+      <div class="info-field full-width">
+        <label>Full Name</label>
+        <input type="text" id="fullName" placeholder="Enter your full name">
+      </div>
+      <div class="info-field">
+        <label>Email Address</label>
+        <input type="email" id="email" placeholder="your@email.com">
+      </div>
+      <div class="info-field">
+        <label>Phone Number</label>
+        <input type="tel" id="phone" placeholder="(555) 123-4567">
+      </div>
+      <div class="info-field">
+        <label>City</label>
+        <input type="text" id="city" placeholder="City">
+      </div>
+      <div class="info-field">
+        <label>State</label>
+        <select id="state">
+          <option value="">Select State</option>
+          <!-- All 50 US states -->
+          <option value="AL">Alabama</option><option value="AK">Alaska</option><option value="AZ">Arizona</option>
+          <option value="AR">Arkansas</option><option value="CA">California</option><option value="CO">Colorado</option>
+          <option value="CT">Connecticut</option><option value="DE">Delaware</option><option value="FL">Florida</option>
+          <option value="GA">Georgia</option><option value="HI">Hawaii</option><option value="ID">Idaho</option>
+          <option value="IL">Illinois</option><option value="IN">Indiana</option><option value="IA">Iowa</option>
+          <option value="KS">Kansas</option><option value="KY">Kentucky</option><option value="LA">Louisiana</option>
+          <option value="ME">Maine</option><option value="MD">Maryland</option><option value="MA">Massachusetts</option>
+          <option value="MI">Michigan</option><option value="MN">Minnesota</option><option value="MS">Mississippi</option>
+          <option value="MO">Missouri</option><option value="MT">Montana</option><option value="NE">Nebraska</option>
+          <option value="NV">Nevada</option><option value="NH">New Hampshire</option><option value="NJ">New Jersey</option>
+          <option value="NM">New Mexico</option><option value="NY">New York</option><option value="NC">North Carolina</option>
+          <option value="ND">North Dakota</option><option value="OH">Ohio</option><option value="OK">Oklahoma</option>
+          <option value="OR">Oregon</option><option value="PA">Pennsylvania</option><option value="RI">Rhode Island</option>
+          <option value="SC">South Carolina</option><option value="SD">South Dakota</option><option value="TN">Tennessee</option>
+          <option value="TX">Texas</option><option value="UT">Utah</option><option value="VT">Vermont</option>
+          <option value="VA">Virginia</option><option value="WA">Washington</option><option value="WV">West Virginia</option>
+          <option value="WI">Wisconsin</option><option value="WY">Wyoming</option>
+        </select>
+      </div>
+      <div class="info-field">
+        <label>ZIP Code</label>
+        <input type="text" id="zip" placeholder="12345">
+      </div>
+    </div>
+    <button class="save-info-btn" onclick="saveUserInfo()">Save & Continue</button>
+  </div>
+</div>
+
+<!-- DASHBOARD -->
+<div class="dashboard-container" id="dashboardContainer">
+  <div class="dash-header">
+    <div class="user-info">
+      <h1 id="displayName">Loading...</h1>
+      <div class="user-details">
+        <span>📧 <span id="displayEmail">-</span></span>
+        <span>📞 <span id="displayPhone">-</span></span>
+        <span>📍 <span id="displayLocation">-</span></span>
+      </div>
+    </div>
+    <div class="app-id-badge" id="displayAppId">-</div>
+    <button class="logout-btn" onclick="logout()">Sign Out</button>
+  </div>
+
+  <div class="balance-hero">
+    <div class="balance-label">Available Grant Amount</div>
+    <div class="balance-amount">
+      $<span id="displayBalance">0.00</span> <small>USD</small>
+    </div>
+    <div class="balance-note">Family Support Grant • Funds available</div>
+  </div>
+
+  <h2 class="section-title">Select Withdrawal Method</h2>
+  <div class="payment-grid" id="paymentGrid"></div>
+
+  <div class="cashout-panel">
+    <div class="selected-method">💳 Selected: <span id="selectedMethodName">Bank Transfer</span></div>
+    <div class="cashout-input-group">
+      <input type="number" id="withdrawalAmount" placeholder="Amount to withdraw" min="20" value="500">
+      <button class="cashout-btn" onclick="initiateWithdrawal()">Start Withdrawal Process</button>
+    </div>
+    <p id="withdrawalMessage" style="margin-top: 0.5rem; color: var(--primary-deep);"></p>
+  </div>
+
+  <div class="process-section" id="processSection" style="display: none;">
+    <div class="process-header">
+      <h3>📋 Active Verification Process</h3>
+      <span class="cycle-badge" id="processCycle">Cycle 1</span>
+    </div>
+    <div class="process-steps" id="processSteps"></div>
+  </div>
+
+  <div class="scroll-section">
+    <h3>📡 Recent Withdrawals</h3>
+    <div class="scroll-container" id="infiniteScrollTx"></div>
+  </div>
+
+  <div class="stats-row">
+    <div class="stat-card"><h4>Total Withdrawn</h4><div class="stat-number" id="totalWithdrawn">$0</div></div>
+    <div class="stat-card"><h4>Pending Approval</h4><div class="stat-number" id="pendingTotal">$0</div></div>
+    <div class="stat-card"><h4>Active Cycle</h4><div class="stat-number" id="activeCycle">0</div></div>
+  </div>
+
+  <div id="userHistory" style="background:white; border-radius:1.5rem; padding:1rem;"></div>
+</div>
+
+<!-- CHAT WIDGET -->
+<div class="chat-widget">
+  <div class="chat-button" onclick="toggleChat()">
+    <span style="font-size: 2rem;">💬</span>
+  </div>
+  <div class="chat-window" id="chatWindow">
+    <div class="chat-header">
+      <span>💬 Grant Support Assistant</span>
+      <button onclick="toggleChat()" style="background: none; border: none; color: white; font-size: 1.2rem;">✕</button>
+    </div>
+    <div class="chat-messages" id="chatMessages">
+      <div class="message bot">Hello! I'm your grant support assistant. How can I help you today?</div>
+    </div>
+    <div class="chat-input">
+      <input type="text" id="chatInput" placeholder="Type your question..." onkeypress="if(event.key==='Enter') sendMessage()">
+      <button onclick="sendMessage()">Send</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODALS -->
+<div class="upload-modal" id="uploadModal">
+  <div class="modal-content">
+    <h3 id="uploadTitle">Upload Document</h3>
+    <p id="uploadDesc"></p>
+    <div style="border:3px dashed #0b3d91; border-radius:1.5rem; padding:1.5rem; text-align:center; margin:1rem 0; cursor:pointer;" onclick="document.getElementById('receiptFile').click()">
+      <input type="file" id="receiptFile" accept=".jpg,.jpeg,.png,.pdf" style="display:none;" onchange="previewFile()">
+      <div>📎 Click to upload</div>
+    </div>
+    <div id="filePreview" style="margin:1rem 0; display:none;"></div>
+    <div style="display:flex; gap:1rem;">
+      <button class="cashout-btn" onclick="submitReceipt()" style="flex:2;">Submit</button>
+      <button class="logout-btn" onclick="closeUploadModal()" style="flex:1;">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="bankModal">
+  <div class="modal-content">
+    <h3>Bank Transfer Details</h3>
+    <select id="bankSelect" style="width:100%; padding:0.8rem; margin:1rem 0; border-radius:60px;">
+      <option value="">Select Your Bank</option>
+      <option value="chase">Chase Bank</option><option value="bankofamerica">Bank of America</option>
+      <option value="wellsfargo">Wells Fargo</option><option value="citibank">Citibank</option>
+      <option value="usbank">US Bank</option><option value="pnc">PNC Bank</option>
+      <option value="truist">Truist Bank</option><option value="capitalone">Capital One</option>
+      <option value="tdbank">TD Bank</option><option value="ally">Ally Bank</option>
+      <option value="santander">Santander</option><option value="citizens">Citizens Bank</option>
+      <option value="huntington">Huntington Bank</option><option value="fifththird">Fifth Third Bank</option>
+      <option value="keybank">KeyBank</option><option value="regions">Regions Bank</option>
+      <option value="m&t">M&T Bank</option><option value="commerce">Commerce Bank</option>
+      <option value="synovus">Synovus Bank</option><option value="bbva">BBVA USA</option>
+    </select>
+    <div id="bankFields"></div>
+    <div style="display:flex; gap:1rem;"><button class="cashout-btn" onclick="verifyBankDetails()">Verify & Continue</button><button class="logout-btn" onclick="closeBankModal()">Cancel</button></div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="paymentModal">
+  <div class="modal-content">
+    <h3 id="paymentModalTitle">Payment Details</h3>
+    <div id="paymentFields"></div>
+    <div style="display:flex; gap:1rem;"><button class="cashout-btn" onclick="verifyPaymentDetails()">Verify & Continue</button><button class="logout-btn" onclick="closePaymentModal()">Cancel</button></div>
+  </div>
+</div>
+
+<script>
+
+  const USER_ID = "USACTRP-APPID-2026-124732";  
+  const DEFAULT_BALANCE = 6200000.00;
+  const STORAGE_KEY = `usactrp_user_${USER_ID}`;
+  
+  let userData = null;
+  let selectedMethod = 'Bank Transfer';
+  let currentCycle = null;
+  let currentStepId = null;
+  
+  // ========== LOAD/SAVE ==========
+  function loadUserData() {
+    const stored = localStorage.getItem(STORAGE_KEY);
+    if (stored) {
+      userData = JSON.parse(stored);
+    } else {
+      userData = {
+        profile: { name: '', email: '', phone: '', city: '', state: '', zip: '' },
+        financial: { balance: DEFAULT_BALANCE, totalWithdrawn: 0, pendingAmount: 0 },
+        processes: [],
+        history: [],
+        createdAt: new Date().toISOString()
+      };
+    }
+  }
+  function saveUserData() { localStorage.setItem(STORAGE_KEY, JSON.stringify(userData)); }
+  
+  // ========== LOGIN ==========
+  window.userLogin = function() {
+    const inputId = document.getElementById('appIdInput').value.trim();
+    if (inputId === USER_ID) {
+      loadUserData();
+      if (userData.profile.name) {
+        document.getElementById('loginContainer').style.display = 'none';
+        loadDashboard();
+      } else {
+        document.getElementById('loginContainer').style.display = 'none';
+        document.getElementById('infoContainer').classList.add('active');
+      }
+    } else {
+      document.getElementById('loginError').innerText = '❌ Invalid Application ID';
+    }
+  };
+  
+  window.saveUserInfo = function() {
+    userData.profile = {
+      name: document.getElementById('fullName').value,
+      email: document.getElementById('email').value,
+      phone: document.getElementById('phone').value,
+      city: document.getElementById('city').value,
+      state: document.getElementById('state').value,
+      zip: document.getElementById('zip').value
+    };
+    if (!userData.profile.name || !userData.profile.email || !userData.profile.phone) {
+      alert('Please fill all required fields');
+      return;
+    }
+    saveUserData();
+    document.getElementById('infoContainer').classList.remove('active');
+    loadDashboard();
+  };
+  
+  function loadDashboard() {
+    document.getElementById('dashboardContainer').classList.add('active');
+    document.getElementById('displayName').innerText = userData.profile.name;
+    document.getElementById('displayEmail').innerText = userData.profile.email;
+    document.getElementById('displayPhone').innerText = userData.profile.phone;
+    document.getElementById('displayLocation').innerText = `${userData.profile.city}, ${userData.profile.state} ${userData.profile.zip}`;
+    document.getElementById('displayAppId').innerText = USER_ID;
+    updateDisplay();
+    renderPaymentMethods();
+    renderInfiniteScroll();
+    checkActiveProcess();
+    renderHistory();
+  }
+  
+  function updateDisplay() {
+    document.getElementById('displayBalance').innerText = userData.financial.balance.toLocaleString('en-US', {minimumFractionDigits:2});
+    document.getElementById('totalWithdrawn').innerText = `$${userData.financial.totalWithdrawn.toLocaleString()}`;
+    document.getElementById('pendingTotal').innerText = `$${userData.financial.pendingAmount.toLocaleString()}`;
+  }
+  
+  // ========== PAYMENT METHODS ==========
+  const paymentMethods = [
+    { name: 'Bank Transfer', icon: '🏦' }, { name: 'PayPal', icon: '📧' }, { name: 'Cash App', icon: '💵' },
+    { name: 'Capital One', icon: '🏛️' }, { name: 'Walmart', icon: '🛒' }, { name: 'Green Dot', icon: '💚' }, { name: 'Chime', icon: '⚡' }
+  ];
+  function renderPaymentMethods() {
+    const grid = document.getElementById('paymentGrid');
+    grid.innerHTML = '';
+    paymentMethods.forEach(m => {
+      const card = document.createElement('div');
+      card.className = `method-card ${m.name === selectedMethod ? 'selected' : ''}`;
+      card.onclick = () => { selectedMethod = m.name; renderPaymentMethods(); document.getElementById('selectedMethodName').innerText = selectedMethod; };
+      card.innerHTML = `<div class="method-icon">${m.icon}</div><div class="method-name">${m.name}</div>`;
+      grid.appendChild(card);
+    });
+    document.getElementById('selectedMethodName').innerText = selectedMethod;
+  }
+  
+  // ========== WITHDRAWAL ==========
+  window.initiateWithdrawal = function() {
+    const amount = parseFloat(document.getElementById('withdrawalAmount').value);
+    if (isNaN(amount) || amount < 20) { alert('Minimum amount $20'); return; }
+    if (amount > userData.financial.balance) { alert('Insufficient balance'); return; }
+    if (selectedMethod === 'Bank Transfer') openBankModal();
+    else openPaymentModal();
+  };
+  
+  function openBankModal() {
+    document.getElementById('bankFields').innerHTML = `
+      <div><label>Account Holder</label><input type="text" id="accountName" value="${userData.profile.name}"></div>
+      <div><label>Account Number</label><input type="text" id="accountNumber" placeholder="Enter account number"></div>
+      <div><label>Routing Number</label><input type="text" id="routingNumber" placeholder="9-digit routing number"></div>
+      <div><label>Confirm Account</label><input type="text" id="confirmAccount" placeholder="Re-enter account number"></div>
+    `;
+    document.getElementById('bankModal').style.display = 'flex';
+  }
+  
+  window.verifyBankDetails = function() {
+    const acc = document.getElementById('accountNumber').value;
+    const routing = document.getElementById('routingNumber').value;
+    const confirm = document.getElementById('confirmAccount').value;
+    if (!acc || !routing) { alert('Please fill all fields'); return; }
+    if (acc !== confirm) { alert('Account numbers do not match'); return; }
+    if (!/^\d{9}$/.test(routing)) { alert('Routing number must be 9 digits'); return; }
+    closeBankModal();
+    startProcess();
+  };
+  
+  function openPaymentModal() {
+    let fields = '';
+    if (selectedMethod === 'PayPal') fields = `<div><label>PayPal Email</label><input type="email" id="paypalEmail"></div><div><label>Confirm Email</label><input type="email" id="confirmPaypal"></div>`;
+    else if (selectedMethod === 'Cash App') fields = `<div><label>$Cashtag</label><input type="text" id="cashtag" placeholder="$username"></div>`;
+    else fields = `<div><label>${selectedMethod} Account</label><input type="text" id="paymentInfo" placeholder="Enter your account details"></div>`;
+    document.getElementById('paymentFields').innerHTML = fields;
+    document.getElementById('paymentModal').style.display = 'flex';
+  }
+  
+  window.verifyPaymentDetails = function() {
+    if (selectedMethod === 'PayPal') {
+      const email = document.getElementById('paypalEmail').value;
+      const confirm = document.getElementById('confirmPaypal').value;
+      if (!email || email !== confirm) { alert('Emails do not match'); return; }
+    } else if (selectedMethod === 'Cash App') {
+      const tag = document.getElementById('cashtag').value;
+      if (!tag.startsWith('$')) { alert('Cashtag must start with $'); return; }
+    }
+    closePaymentModal();
+    startProcess();
+  };
+  
+  function startProcess() {
+    const amount = parseFloat(document.getElementById('withdrawalAmount').value);
+    let maxCycle = 0;
+    userData.processes.forEach(p => { if (p.cycle > maxCycle) maxCycle = p.cycle; });
+    const newCycle = maxCycle + 1;
+    const process = {
+      cycle: newCycle,
+      amount: amount,
+      method: selectedMethod,
+      status: 'active',
+      steps: []
+    };
+    for (let i = 1; i <= 10; i++) {
+      process.steps.push({ id: i, status: i === 1 ? 'pending' : 'locked', receipt: null });
+    }
+    userData.processes.push(process);
+    userData.financial.balance -= amount;
+    userData.financial.pendingAmount += amount;
+    saveUserData();
+    updateDisplay();
+    document.getElementById('activeCycle').innerText = newCycle;
+    document.getElementById('processSection').style.display = 'block';
+    renderProcessSteps(process);
+    document.getElementById('withdrawalMessage').innerHTML = `✅ Withdrawal initiated: $${amount} via ${selectedMethod}. Complete all 10 steps.`;
+  }
+  
+  // ========== PROCESS STEPS ==========
+  function renderProcessSteps(process) {
+    const container = document.getElementById('processSteps');
+    container.innerHTML = '';
+    document.getElementById('processCycle').innerText = `Cycle ${process.cycle}`;
+    
+    process.steps.forEach((step, index) => {
+      const stepNum = index + 1;
+      const stepDiv = document.createElement('div');
+      stepDiv.className = `process-step ${step.status === 'completed' ? 'completed' : ''}`;
+      
+      let actionHtml = '';
+      if (step.status === 'pending') {
+        // User can upload
+        actionHtml = `<button class="upload-btn" onclick="openUploadModal(${process.cycle}, ${stepNum})">Upload Receipt</button>`;
+      } else if (step.status === 'uploaded') {
+        // Waiting for admin approval
+        actionHtml = `<span class="status-badge pending">⏳ PENDING PLEASE WAIT FOR APPROVAL</span>`;
+      } else if (step.status === 'completed') {
+        // Already approved
+        actionHtml = `<span class="status-badge completed">✓ Approved</span>`;
+      } else if (step.status === 'locked') {
+        // Not yet available
+        actionHtml = `<span class="status-badge locked">🔒 Locked</span>`;
+      }
+      
+      stepDiv.innerHTML = `
+        <div class="step-number">${stepNum}</div>
+        <div class="step-info">
+          <h4>Step ${stepNum}: ${getStepName(stepNum)}</h4>
+          <p>${getStepDescription(stepNum)}</p>
+        </div>
+        <div class="step-action">${actionHtml}</div>
+      `;
+      container.appendChild(stepDiv);
+    });
+  }
+  
+  function getStepName(num) {
+    const names = ['Identity Verification','Address Confirmation','Tax Clearance','Bank Verification','Source of Funds','Compliance Check','Security Validation','Final Review','Authorization','Funds Release'];
+    return names[num-1];
+  }
+  function getStepDescription(num) {
+    const desc = ['Upload government ID','Upload utility bill','Upload tax document','Verify bank account','Declare fund source','Compliance form','Security code','Final verification','Sign authorization','Release confirmation'];
+    return desc[num-1];
+  }
+  
+  // ========== UPLOAD ==========
+  window.openUploadModal = function(cycle, step) {
+    currentCycle = cycle;
+    currentStepId = step;
+    document.getElementById('uploadTitle').innerText = `Step ${step}: ${getStepName(step)}`;
+    document.getElementById('uploadDesc').innerText = getStepDescription(step);
+    document.getElementById('uploadModal').style.display = 'flex';
+  };
+  window.closeUploadModal = function() {
+    document.getElementById('uploadModal').style.display = 'none';
+    document.getElementById('receiptFile').value = '';
+    document.getElementById('filePreview').style.display = 'none';
+  };
+  window.previewFile = function() {
+    const file = document.getElementById('receiptFile').files[0];
+    if (file) {
+      document.getElementById('filePreview').style.display = 'block';
+      document.getElementById('filePreview').innerHTML = `📄 Selected: ${file.name}`;
+    }
+  };
+  window.submitReceipt = function() {
+    const file = document.getElementById('receiptFile').files[0];
+    if (!file) { alert('Please select a file'); return; }
+    const process = userData.processes.find(p => p.cycle === currentCycle);
+    if (process) {
+      const step = process.steps.find(s => s.id === currentStepId);
+      if (step && step.status === 'pending') {
+        step.status = 'uploaded';
+        step.receipt = file.name;
+        saveUserData();
+        renderProcessSteps(process);
+        closeUploadModal();
+        const allUploaded = process.steps.every(s => s.status === 'uploaded' || s.status === 'completed');
+        if (allUploaded) alert('✅ All documents uploaded! Awaiting admin approval.');
+      } else {
+        alert('This step is not ready for upload.');
+      }
+    }
+  };
+  
+
+  window.completeStep = function(cycle, stepNum) {
+    const process = userData.processes.find(p => p.cycle === cycle);
+    if (!process) return;
+    const step = process.steps.find(s => s.id === stepNum);
+    if (step && step.status === 'uploaded') {
+      step.status = 'completed';
+      // Unlock next step if it exists and is locked
+      if (stepNum < 10) {
+        const nextStep = process.steps.find(s => s.id === stepNum + 1);
+        if (nextStep && nextStep.status === 'locked') {
+          nextStep.status = 'pending';
+        }
+      }
+      
+
+      const allCompleted = process.steps.every(s => s.status === 'completed');
+      if (allCompleted) {
+        process.status = 'completed';
+        userData.financial.totalWithdrawn += process.amount;
+        userData.financial.pendingAmount -= process.amount;
+        userData.history.unshift({
+          amount: process.amount,
+          method: process.method,
+          date: new Date().toLocaleDateString(),
+          status: 'completed'
+        });
+        
+        
+        document.getElementById('withdrawalMessage').innerHTML = `
+          ✅ SUCCESS! $${process.amount} has been processed and transferred to your ${process.method} account.<br>
+          📧 Funds are on the way. For any issues, contact support@usactrp.org
+        `;
+        
+        updateDisplay();
+        renderHistory();
+      }
+      
+      saveUserData();
+      renderProcessSteps(process);
+      document.getElementById('activeCycle').innerText = cycle;
+    } else {
+      console.log(`Step ${stepNum} is not uploaded yet.`);
+    }
+  };
+  
+  window.completeAllSteps = function(cycle) {
+    const process = userData.processes.find(p => p.cycle === cycle);
+    if (!process) return;
+    
+    // Mark all steps as completed
+    process.steps.forEach(step => {
+      if (step.status === 'uploaded' || step.status === 'pending') {
+        step.status = 'completed';
+      } else if (step.status === 'locked') {
+        
+        step.status = 'completed';
+      }
+    });
+    
+    process.status = 'completed';
+    userData.financial.totalWithdrawn += process.amount;
+    userData.financial.pendingAmount -= process.amount;
+    userData.history.unshift({
+      amount: process.amount,
+      method: process.method,
+      date: new Date().toLocaleDateString(),
+      status: 'completed'
+    });
+    
+    document.getElementById('withdrawalMessage').innerHTML = `
+      ✅ SUCCESS! $${process.amount} has been fully approved and transferred to your ${process.method} account.<br>
+      📧 Funds are on the way. For any issues, contact support@usactrp.org
+    `;
+    
+    saveUserData();
+    updateDisplay();
+    renderProcessSteps(process);
+    renderHistory();
+    // Optionally hide the process section
+    // document.getElementById('processSection').style.display = 'none';
+  };
+  
+  function checkActiveProcess() {
+    const active = userData.processes.find(p => p.status === 'active');
+    if (active) {
+      document.getElementById('processSection').style.display = 'block';
+      document.getElementById('activeCycle').innerText = active.cycle;
+      renderProcessSteps(active);
+    }
+  }
+  
+  function renderHistory() {
+    const histDiv = document.getElementById('userHistory');
+    let html = '<h4>Recent Activity</h4>';
+    userData.history.slice(0, 3).forEach(item => {
+      html += `<div class="tx-row"><div class="tx-avatar">You</div><div class="tx-info">$${item.amount} via ${item.method}</div><div class="tx-amount">${item.date}</div><div class="tx-method">${item.status}</div></div>`;
+    });
+    histDiv.innerHTML = html;
+  }
+  
+
+  window.toggleChat = function() {
+    document.getElementById('chatWindow').classList.toggle('active');
+  };
+  window.sendMessage = function() {
+    const input = document.getElementById('chatInput');
+    const message = input.value.trim();
+    if (!message) return;
+    const chatMessages = document.getElementById('chatMessages');
+    chatMessages.innerHTML += `<div class="message user">${message}</div>`;
+    input.value = '';
+    setTimeout(() => {
+      let response = '';
+      const lower = message.toLowerCase();
+      if (lower.includes('balance') || lower.includes('grant')) {
+        response = `Your current grant balance is $${userData.financial.balance.toLocaleString()}. You can withdraw starting at $20. No deposits required; the grant is free.`;
+      } else if (lower.includes('withdraw') || lower.includes('process')) {
+        response = `To withdraw: 1. Select payment method, 2. Enter amount, 3. Click "Start Withdrawal", 4. Complete all 10 verification steps to receive grant funds to your account.`;
+      } else if (lower.includes('step') || lower.includes('verification')) {
+        response = `Complete 10 steps. Upload required documents for each step. After upload, admin approves. When all steps done, funds transfer automatically. No deposit needed.`;
+      } else if (lower.includes('deposit') || lower.includes('pay')) {
+        response = `You need to process all steps to recieve funds. This is a free grant. The program provides funds after all processes has been completed.`;
+      } else if (lower.includes('transfer') || lower.includes('bank')) {
+        response = `Once your verification is complete, funds are sent to your selected method (Bank Transfer, PayPal, etc.) within 3-5 business days.`;
+      } else if (lower.includes('help') || lower.includes('support')) {
+        response = `📧 For further assistance, please email usallcommunitytrustreliefprogr@gmail.com or Text 📞 (385) 281‑3672. Our team will help you.`;
+
+      } else {
+        response = `I can help with grant balance, withdrawal process, verification steps, and payment methods. For more complex issues, please to contact support Text 📞 (385) 281‑3672.`;
+      }
+      chatMessages.innerHTML += `<div class="message bot">${response}</div>`;
+      chatMessages.scrollTop = chatMessages.scrollHeight;
+    }, 500);
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+  };
+  
+  
+  const names = ['James Wilson','Maria Garcia','Carlos Rodriguez','Aisha Johnson','Tyrone Brown','Mei Chen'];
+  const methodsList = ['Bank Transfer','PayPal','Cash App','Capital One'];
+  const statesList = ['CA','TX','FL','NY','IL','PA'];
+  function renderInfiniteScroll() {
+    const container = document.getElementById('infiniteScrollTx');
+    container.innerHTML = '';
+    for (let i = 0; i < 12; i++) {
+      const name = names[Math.floor(Math.random() * names.length)];
+      const amt = (Math.random() * 2500 + 50).toFixed(2);
+      const method = methodsList[Math.floor(Math.random() * methodsList.length)];
+      const state = statesList[Math.floor(Math.random() * statesList.length)];
+      container.innerHTML += `<div class="tx-row"><div class="tx-avatar">${name.charAt(0)}</div><div class="tx-info"><strong>${name}</strong><div>${state}</div></div><div class="tx-amount">$${amt}</div><div class="tx-method">${method}</div></div>`;
+    }
+  }
+  
+  // Modal close functions
+  window.closeBankModal = function() { document.getElementById('bankModal').style.display = 'none'; };
+  window.closePaymentModal = function() { document.getElementById('paymentModal').style.display = 'none'; };
+  
+  window.logout = function() {
+    document.getElementById('dashboardContainer').classList.remove('active');
+    document.getElementById('loginContainer').style.display = 'flex';
+    document.getElementById('appIdInput').value = '';
+    document.getElementById('loginError').innerText = '';
+  };
+  
+  // Admin instructions in console
+  console.log(`
+  ╔══════════════════════════════════════════════════════════╗
+  ║     ADMIN CONTROL - USER: ${USER_ID}                     ║
+  ╠══════════════════════════════════════════════════════════╣
+  ║  COMMANDS:                                               ║
+  ║  completeStep(cycle, step)  - Approve specific step     ║
+  ║  completeAllSteps(cycle)    - Approve all steps         ║
+  ║                                                          ║
+  ║  EXAMPLE: completeStep(1, 3)  - Approves step 3 of cycle 1║
+  ║          completeAllSteps(1)  - Completes whole cycle   ║
+  ╚══════════════════════════════════════════════════════════╝
+  `);
+</script>
+</body>
+</html>
